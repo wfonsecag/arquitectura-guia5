@@ -1,0 +1,60 @@
+ 
+ 
+Actividad de la Guía de Trabajo No.5 
+Taller evaluativo 20% 
+1. IDENTIFICACIÓN DE LA ASIGNATURA 
+ Asignatura: Arquitectura de Software II 
+Código: 190304011 Área: Sistemas 
+Plan de Estudios:  Semestre:  
+Créditos: 3 TPS:   TIS:  TPT:  TIT:  
+Trabajo Independiente:  Trabajo Presencial: 
+Trabajo Teórico:  Trabajo Práctico:  Trabajo Teórico:  Trabajo Práctico:  
+1. ACTIVIDAD 
+Instrucciones generales: 
+Cada grupo (máximo 3 o 4 participantes) teniendo ya su escenario propio del primer momento y 
+teniendo en cuenta que lo debe mantener como caso de estudio a lo largo del semestre.  
+ 
+La entrega debe realizarse en un formato y solo la debe cargar un integrante del grupo en la 
+plataforma: 
+• Documento escrito (1 por grupo) que incluya todo el material solicitado. 
+ 
+Puntos para evaluar: 
+1. Test Plan en Azure 
+o Realiza un test plan que contemple 5 pruebas realizadas a un sitio web (puedes 
+elegir el sitio que quieras) procura ver a detalle para poder identificar bugs. 
+o Comparte las imágenes y la explicación de lo que realizaste. 
+2. Archivo YAML 
+o Crea un archivo YAML para tu proyecto en el directorio .github/workflows/ el 
+objetivo es evidenciar el flujo de CI/CD de tu proyecto. 
+o Comparte las imágenes y la explicación de lo que realiza el archivo. 
+ 
+3. Disparador 
+o Este archivo debe garantizar que cada vez que realices un commit (garantizar 
+que se realicen 2), se ejecute el proceso de CI/CD automáticamente de tu 
+proyecto debes garantizar que este funcione correctamente. 
+o Comparte las imágenes y la explicación del proceso 
+ 
+4. Feedback 
+o Considerando todo lo aprendido en el curso y teniendo en cuenta que este 
+proyecto puede seguir creciendo, realicen su proceso de retrospectiva teniendo 
+en cuante los siguientes aspectos individualmente: 
+▪ ¿Que hice bien? 
+▪ ¿Que hice mal? 
+▪ ¿Como equipo, que debemos seguir haciendo? 
+
+ 
+ 
+ 
+ 
+2. RESULTADO ESPERADO 
+• Cargar en el espacio de entregas de la plataforma un documento de texto en pdf 
+• El documento debe llevar una hoja con la información del estudiante, el programa y fecha 
+• Las hojas siguientes y necesarias para responder los puntos planteados. 
+ 
+3. RECURSOS REQUERIDOS 
+• Leer el material de clase 
+• Equipo de cómputo con conexión a Internet  
+Elaborado por: Jonathan Sánchez Giraldo 
+Versión: 1.0 
+Fecha: Febrero de 2025 
+ 

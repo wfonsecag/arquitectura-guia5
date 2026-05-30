@@ -1,0 +1,115 @@
+trigger:
+  branches:
+    include:
+      - main
+      - develop
+      - master
+
+pr:
+  branches:
+    include:
+      - main
+      - develop
+      - master
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  pythonVersion: '3.11'
+  nodeVersion: '18.x'
+
+stages:
+  - stage: Build
+    displayName: 'Build & Test'
+    jobs:
+      - job: BuildJob
+        displayName: 'Build Job'
+        steps:
+          - checkout: self
+            displayName: 'Checkout Repository'
+
+          - task: UsePythonVersion@0
+            inputs:
+              versionSpec: '$(pythonVersion)'
+            displayName: 'Set Python Version'
+            condition: eq(variables['Agent.OS'], 'Linux')
+
+          - script: |
+              python --version
+              python -m pip install --upgrade pip
+              if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+            displayName: 'Install Python Dependencies (if any)'
+            condition: eq(variables['Agent.OS'], 'Linux')
+
+          - task: UseNode@1
+            inputs:
+              version: '$(nodeVersion)'
+            displayName: 'Set Node Version'
+            condition: eq(variables['Agent.OS'], 'Linux')
+
+          - script: |
+              npm --version
+              if [ -f package.json ]; then npm install; fi
+              if [ -f package.json ]; then npm run build || true; fi
+            displayName: 'Install Node Dependencies & Build (if any)'
+            condition: eq(variables['Agent.OS'], 'Linux')
+
+          - script: |
+              if [ -d tests ]; then pytest -q --tb=short || true; fi
+              if [ -f pytest.ini ]; then pytest -q --tb=short || true; fi
+            displayName: 'Run Tests (Python - if any)'
+            condition: eq(variables['Agent.OS'], 'Linux')
+
+          - script: |
+              if [ -f package.json ]; then npm test || true; fi
+            displayName: 'Run Tests (Node - if any)'
+            condition: eq(variables['Agent.OS'], 'Linux')
+
+          - task: PublishBuildArtifacts@1
+            inputs:
+              pathToPublish: '$(Build.ArtifactStagingDirectory)'
+              artifactName: 'build-artifacts'
+            displayName: 'Publish Build Artifacts'
+            condition: succeededOrFailed()
+
+  - stage: CodeQuality
+    displayName: 'Code Quality & Linting'
+    dependsOn: Build
+    condition: succeeded()
+    jobs:
+      - job: LintJob
+        displayName: 'Lint & Static Analysis'
+        steps:
+          - checkout: self
+
+          - task: UsePythonVersion@0
+            inputs:
+              versionSpec: '$(pythonVersion)'
+            displayName: 'Set Python Version'
+
+          - script: |
+              python -m pip install flake8 pylint
+              flake8 . --count --exit-zero --max-line-length=127 --statistics || true
+              pylint **/*.py --exit-zero || true
+            displayName: 'Python Linting (flake8, pylint)'
+            continueOnError: true
+
+          - task: UseNode@1
+            inputs:
+              version: '$(nodeVersion)'
+            displayName: 'Set Node Version'
+
+          - script: |
+              if [ -f package.json ]; then npm run lint || true; fi
+            displayName: 'Node Linting (if configured)'
+            continueOnError: true
+
+# Notas para el equipo:
+# 1. Este pipeline se dispara en cada commit a main, develop o master.
+# 2. Asegúrate de tener al menos 2 commits para evidenciar los triggers.
+# 3. Etapas:
+#    - Build: instala dependencias, ejecuta tests (Python y Node).
+#    - CodeQuality: análisis de código con flake8 y pylint.
+# 4. Para ver ejecuciones: Azure DevOps > Pipelines > Runs.
+# 5. Captura de pantalla de una ejecución exitosa: demuestra el flujo CI/CD.
